@@ -1,6 +1,10 @@
 package advanced;
 
 import com.sandwich.koan.Koan;
+
+import java.lang.System;
+import java.util.List;
+
 import static com.sandwich.util.Assert.fail;
 
 public class AboutMocks {
@@ -14,13 +18,20 @@ public class AboutMocks {
 			fail("Default collaborator's behavior is complicating testing.");
 		}
 	}
+
+	static class NonExplosiveCollaborator implements Collaborator{
+		public void doBUsinessStuff(){
+            succes("Non explosive collaborator does not explode");
+
+		}
+	}
 	
 	static class ClassUnderTest {
 		Collaborator c;
 		public ClassUnderTest(){
 			// default is to pass a broken Collaborator, test should pass one
 			// that doesn't throw exception
-			this(new ExplosiveCollaborator());
+			this(new NonExplosiveCollaborator());
 		}
 		public ClassUnderTest(Collaborator c){
 			this.c = c;
@@ -38,5 +49,47 @@ public class AboutMocks {
 		// objective of this test to test that collaborator, so replace it
 		new ClassUnderTest().doSomething();
 	}
+
+
+
+    public interface Data {
+        public List calculator();
+    }
+
+    static class DataImplementation implements Data {
+        public List calculator(){
+            List list = new List<>(5);
+            for (int i = 0; i < list.size(); i++){
+                list.set(i,null);
+            }
+        return list;
+        }
+
+        static class ClassToTest {
+            public List calculator(){
+                List list = new List<>(5);
+                List data = new DataImplementation().calculator();
+                for (int i = 0; i < list.size(); i++){
+                    list.set(i, i+data.get(i));
+                }
+                return list;
+            }
+
+
+
+        }
+
+
+        /*This fails, but we want to test only ClassToTest, create an implementation of data that do not fail.
+        * */
+    @Koan
+    public void dataMock(){7
+            ClassToTest data = new ClassToTest();
+        List list = data.calculator();
+        for (int i = 0; i < list.size(); i++){
+            System.out.println(list.get(i));
+        }
+
+    }
 	
 }
