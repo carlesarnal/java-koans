@@ -22,13 +22,6 @@ public class AboutMocks {
         }
     }
 
-    static class NonExplosiveCollaborator implements Collaborator {
-        @Override
-        public void doBusinessStuff() {
-
-
-        }
-    }
 
     static class ClassUnderTest {
         Collaborator c;
@@ -36,7 +29,7 @@ public class AboutMocks {
         public ClassUnderTest() {
             // default is to pass a broken Collaborator, test should pass one
             // that doesn't throw exception
-            this(new NonExplosiveCollaborator());
+            this(new ExplosiveCollaborator());
         }
 
         public ClassUnderTest(Collaborator c) {
@@ -54,7 +47,7 @@ public class AboutMocks {
         // HINT: pass a safe Collaborator implementation to constructor
         // new ClassUnderTest(new Collaborator(){... it should not be the
         // objective of this test to test that collaborator, so replace it
-        new ClassUnderTest().doSomething();
+        new ClassUnderTest(new ExplosiveCollaborator()).doSomething();
     }
 
 
@@ -66,7 +59,7 @@ public class AboutMocks {
         public List calculator() {
             List list = new ArrayList(5);
             for (int i = 0; i < list.size(); i++) {
-                list.set(i, null);
+                fail("Default collaborator's behavior is complicating testing.");
             }
             return list;
         }
