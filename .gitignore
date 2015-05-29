@@ -1,5 +1,6 @@
 *.class
 */bin/*
+ koans/.idea/workspace.xml
 .metadata
 bin/*
 lib/build/bin/*
@@ -11,5 +12,6 @@ koans/data*
 koans/app/data
 lib/file-compiler/bin
 koans/app/config/file_hashes.dat
-/home/carles/repos/DevScola/java-koans/koans/.idea
+koans/.idea
+.gitignore~
 
